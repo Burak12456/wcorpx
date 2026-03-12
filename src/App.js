@@ -1,4 +1,5 @@
 import React from "react";
+import React from "react";
 import { useState, useEffect, useRef } from "react";
 
 const C = {
@@ -66,6 +67,12 @@ const ICONS = {
   mail:     "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6",
   map:      "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
   instagram:"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z",
+  send:     "M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z",
+};
+
+const scrollTo = (id) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
 const SvcCard = ({ iconKey, title, desc, delay, vis }) => {
@@ -121,6 +128,134 @@ const StatCard = ({ value, label, sub }) => {
   );
 };
 
+const ContactForm = () => {
+  const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSending(true);
+    setTimeout(() => {
+      setSending(false);
+      setSent(true);
+    }, 1200);
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "0.85rem 1rem",
+    borderRadius: 9,
+    border: `1.5px solid ${C.gray200}`,
+    fontSize: "0.9rem",
+    color: C.navy,
+    background: C.white,
+    outline: "none",
+    boxSizing: "border-box",
+    fontFamily: "'Segoe UI', system-ui, sans-serif",
+    transition: "border-color 0.2s",
+  };
+
+  const labelStyle = {
+    fontSize: "0.8rem",
+    fontWeight: 700,
+    color: C.navy,
+    marginBottom: "0.4rem",
+    display: "block",
+    letterSpacing: "0.04em",
+  };
+
+  if (sent) {
+    return (
+      <div style={{ textAlign: "center", padding: "3rem 2rem" }}>
+        <div style={{ width: 64, height: 64, borderRadius: "50%", background: C.orgBg, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.25rem" }}>
+          <Ico d={ICONS.check} size={28} color={C.org} />
+        </div>
+        <div style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: "1.3rem", color: C.navy, marginBottom: "0.5rem" }}>Mesajınız İletildi!</div>
+        <p style={{ color: C.gray500, fontSize: "0.9rem" }}>En kısa sürede sizinle iletişime geçeceğiz.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        <div>
+          <label style={labelStyle}>Ad Soyad *</label>
+          <input
+            required
+            style={inputStyle}
+            placeholder="Adınız Soyadınız"
+            value={form.name}
+            onChange={e => setForm({ ...form, name: e.target.value })}
+            onFocus={e => e.target.style.borderColor = C.org}
+            onBlur={e => e.target.style.borderColor = C.gray200}
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>E-posta *</label>
+          <input
+            required
+            type="email"
+            style={inputStyle}
+            placeholder="ornek@sirket.com"
+            value={form.email}
+            onChange={e => setForm({ ...form, email: e.target.value })}
+            onFocus={e => e.target.style.borderColor = C.org}
+            onBlur={e => e.target.style.borderColor = C.gray200}
+          />
+        </div>
+      </div>
+      <div>
+        <label style={labelStyle}>Şirket Adı</label>
+        <input
+          style={inputStyle}
+          placeholder="Şirketinizin adı"
+          value={form.company}
+          onChange={e => setForm({ ...form, company: e.target.value })}
+          onFocus={e => e.target.style.borderColor = C.org}
+          onBlur={e => e.target.style.borderColor = C.gray200}
+        />
+      </div>
+      <div>
+        <label style={labelStyle}>Mesajınız *</label>
+        <textarea
+          required
+          rows={5}
+          style={{ ...inputStyle, resize: "vertical", lineHeight: 1.65 }}
+          placeholder="Şirketinizin ihtiyaçlarını ve beklentilerinizi paylaşın..."
+          value={form.message}
+          onChange={e => setForm({ ...form, message: e.target.value })}
+          onFocus={e => e.target.style.borderColor = C.org}
+          onBlur={e => e.target.style.borderColor = C.gray200}
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={sending}
+        style={{
+          background: sending ? C.gray200 : C.org,
+          color: sending ? C.gray500 : "#fff",
+          fontFamily: "Georgia, serif",
+          fontWeight: 700,
+          fontSize: "1rem",
+          padding: "0.95rem 2rem",
+          borderRadius: 9,
+          border: "none",
+          cursor: sending ? "not-allowed" : "pointer",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          transition: "background 0.2s",
+        }}
+      >
+        {sending ? "Gönderiliyor..." : <><Ico d={ICONS.send} size={17} color="#fff" /> Mesaj Gönder</>}
+      </button>
+    </form>
+  );
+};
+
 export default function WcorpX() {
   const [mOpen, setMOpen]       = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -131,13 +266,20 @@ export default function WcorpX() {
     return () => window.removeEventListener("scroll", f);
   }, []);
 
-  const [rHero,  vHero]  = useInView();
-  const [rStats, vStats] = useInView();
-  const [rApp,   vApp]   = useInView();
-  const [rSvc,   vSvc]   = useInView();
-  const [rTeam,  vTeam]  = useInView();
-  const [rChall, vChall] = useInView();
-  const [rWhy,   vWhy]   = useInView();
+  const [rHero,    vHero]    = useInView();
+  const [rStats,   vStats]   = useInView();
+  const [rApp,     vApp]     = useInView();
+  const [rSvc,     vSvc]     = useInView();
+  const [rTeam,    vTeam]    = useInView();
+  const [rChall,   vChall]   = useInView();
+  const [rWhy,     vWhy]     = useInView();
+  const [rContact, vContact] = useInView();
+
+  const navLinks = [
+    { label: "Hizmetlerimiz", id: "hizmetler" },
+    { label: "Ekibimiz",      id: "ekip" },
+    { label: "İletişim",      id: "iletisim" },
+  ];
 
   const approach = [
     { icon: "target", num: "01", title: "Derin Analiz",     desc: "Postür, mobilite, esneklik, MaxVO₂ ve vücut kompozisyonu testleriyle şirketinizin sağlık haritasını çıkarıyoruz." },
@@ -189,25 +331,49 @@ export default function WcorpX() {
         transition: "all 0.3s",
       }}>
         <div style={{ ...inner, padding: "0 2rem", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <a href="#" style={{ ...sora, fontWeight: 900, fontSize: "1.5rem", letterSpacing: "-0.04em", color: C.org, textDecoration: "none" }}>
+          <a
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            style={{ ...sora, fontWeight: 900, fontSize: "1.5rem", letterSpacing: "-0.04em", color: C.org, textDecoration: "none", cursor: "pointer" }}
+          >
             WcorpX
           </a>
+          {/* Desktop Nav */}
           <nav style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-            {["Hizmetlerimiz", "Ekibimiz", "İletişim"].map(l => (
-              <a key={l} href="#" style={{ fontSize: "0.88rem", fontWeight: 500, color: C.gray700, textDecoration: "none" }}>{l}</a>
+            {navLinks.map(({ label, id }) => (
+              <a
+                key={id}
+                onClick={() => scrollTo(id)}
+                style={{ fontSize: "0.88rem", fontWeight: 500, color: C.gray700, textDecoration: "none", cursor: "pointer" }}
+              >
+                {label}
+              </a>
             ))}
-            <button style={{ background: C.org, color: "#fff", ...sora, fontWeight: 700, fontSize: "0.88rem", padding: "0.6rem 1.4rem", borderRadius: 7, border: "none", cursor: "pointer", marginLeft: 8 }}>
+            <button
+              onClick={() => scrollTo("iletisim")}
+              style={{ background: C.org, color: "#fff", ...sora, fontWeight: 700, fontSize: "0.88rem", padding: "0.6rem 1.4rem", borderRadius: 7, border: "none", cursor: "pointer", marginLeft: 8 }}
+            >
               Teklif Alın
             </button>
           </nav>
-          <button onClick={() => setMOpen(!mOpen)} style={{ display: "none", background: "none", border: "none", cursor: "pointer" }}>
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMOpen(!mOpen)}
+            style={{ display: "none", background: "none", border: "none", cursor: "pointer" }}
+            className="mobile-menu-btn"
+          >
             <Ico d={mOpen ? ICONS.x : ICONS.menu} size={24} color={C.navy} />
           </button>
         </div>
         {mOpen && (
           <div style={{ background: C.white, borderTop: `1px solid ${C.gray200}`, padding: "1.25rem 2rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {["Hizmetlerimiz", "Ekibimiz", "İletişim"].map(l => (
-              <a key={l} href="#" style={{ fontSize: "0.95rem", fontWeight: 500, color: C.gray700, textDecoration: "none" }}>{l}</a>
+            {navLinks.map(({ label, id }) => (
+              <a
+                key={id}
+                onClick={() => { scrollTo(id); setMOpen(false); }}
+                style={{ fontSize: "0.95rem", fontWeight: 500, color: C.gray700, textDecoration: "none", cursor: "pointer" }}
+              >
+                {label}
+              </a>
             ))}
           </div>
         )}
@@ -228,8 +394,12 @@ export default function WcorpX() {
             WcorpX ile şirketinizdeki stresi azaltın, çalışan bağlılığını artırın. Bilimsel temelli ve sahada kanıtlanmış bütünsel wellness çözümleri.
           </p>
           <div style={{ ...fade(vHero, 0.3), display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-            <button style={btnOrg}>Hizmetlerimizi İnceleyin <Ico d={ICONS.arrow} size={18} color="#fff" /></button>
-            <button style={btnOutl}>İletişime Geçin <Ico d={ICONS.chevron} size={18} color={C.navy} /></button>
+            <button style={btnOrg} onClick={() => scrollTo("hizmetler")}>
+              Hizmetlerimizi İnceleyin <Ico d={ICONS.arrow} size={18} color="#fff" />
+            </button>
+            <button style={btnOutl} onClick={() => scrollTo("iletisim")}>
+              İletişime Geçin <Ico d={ICONS.chevron} size={18} color={C.navy} />
+            </button>
           </div>
         </div>
       </section>
@@ -276,7 +446,7 @@ export default function WcorpX() {
       </section>
 
       {/* ══ SERVICES ══ */}
-      <section style={{ background: C.white, padding: "5rem 2rem" }}>
+      <section id="hizmetler" style={{ background: C.white, padding: "5rem 2rem" }}>
         <div ref={rSvc} style={inner}>
           <div style={{ ...fade(vSvc, 0), textAlign: "center" }}>
             <div style={tag}>Hizmetler</div>
@@ -318,7 +488,7 @@ export default function WcorpX() {
       </section>
 
       {/* ══ EKİBİMİZ ══ */}
-      <section style={{ background: C.navy2, padding: "5rem 2rem" }}>
+      <section id="ekip" style={{ background: C.navy2, padding: "5rem 2rem" }}>
         <div ref={rTeam} style={inner}>
           <div style={{ ...fade(vTeam, 0), textAlign: "center" }}>
             <div style={{ ...tag, color: C.org }}>Uzman Kadromuz</div>
@@ -376,9 +546,64 @@ export default function WcorpX() {
         <p style={{ color: "rgba(255,255,255,0.60)", fontSize: "1rem", marginBottom: "2rem" }}>
           Sizi arayalım, ihtiyaçlarınızı dinleyelim ve size özel bir yol haritası çizelim.
         </p>
-        <button style={{ ...btnOrg, fontSize: "1.05rem", padding: "1rem 2.5rem" }}>
+        <button style={{ ...btnOrg, fontSize: "1.05rem", padding: "1rem 2.5rem" }} onClick={() => scrollTo("iletisim")}>
           Ücretsiz Analiz Talep Et <Ico d={ICONS.arrow} size={20} color="#fff" />
         </button>
+      </section>
+
+      {/* ══ İLETİŞİM ══ */}
+      <section id="iletisim" style={{ background: C.gray50, padding: "5rem 2rem" }}>
+        <div ref={rContact} style={{ ...inner, maxWidth: 1100 }}>
+          <div style={{ ...fade(vContact, 0), textAlign: "center", marginBottom: "3rem" }}>
+            <div style={tag}>İletişim</div>
+            <h2 style={h2style}>Birlikte <span style={{ color: C.org }}>Başlayalım</span></h2>
+            <p style={{ fontSize: "1rem", color: C.gray500, lineHeight: 1.75, maxWidth: 500, margin: "0 auto" }}>
+              Şirketinize özel wellness programı için hemen iletişime geçin.
+            </p>
+          </div>
+
+          <div style={{ ...fade(vContact, 0.1), display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+
+            {/* Sol: İletişim Bilgileri */}
+            <div>
+              <div style={{ ...sora, fontWeight: 700, fontSize: "1.1rem", color: C.navy, marginBottom: "1.75rem" }}>Bize Ulaşın</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                {[
+                  { icon: "phone", label: "Burak Koç", value: "+90 530 945 89 96", href: "tel:+905309458996" },
+                  { icon: "phone", label: "Tarık Eken", value: "+90 538 354 30 24", href: "tel:+905383543024" },
+                  { icon: "mail",  label: "Burak Koç", value: "burak.koc@wcorpx.com", href: "mailto:burak.koc@wcorpx.com" },
+                  { icon: "mail",  label: "Tarık Eken", value: "tarik.eken@wcorpx.com", href: "mailto:tarik.eken@wcorpx.com" },
+                  { icon: "instagram", label: "Instagram", value: "@wcorpx", href: "https://instagram.com/wcorpx" },
+                ].map(({ icon, label, value, href }) => (
+                  <a key={value} href={href} target={icon === "instagram" ? "_blank" : undefined} rel="noreferrer"
+                    style={{ display: "flex", alignItems: "flex-start", gap: 14, textDecoration: "none" }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: C.orgBg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Ico d={ICONS[icon]} size={17} color={C.org} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "0.75rem", fontWeight: 700, color: C.gray500, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
+                      <div style={{ fontSize: "0.92rem", color: C.navy, fontWeight: 500 }}>{value}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              <div style={{ marginTop: "2.5rem", background: C.navy, borderRadius: 14, padding: "1.5rem 1.75rem" }}>
+                <div style={{ ...sora, fontWeight: 700, fontSize: "0.92rem", color: "#fff", marginBottom: "0.5rem" }}>Ücretsiz Keşif Görüşmesi</div>
+                <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>
+                  İlk görüşme tamamen ücretsizdir. Şirketinizin ihtiyaçlarını dinler, size özel bir yol haritası sunarız.
+                </p>
+              </div>
+            </div>
+
+            {/* Sağ: Form */}
+            <div style={{ background: C.white, borderRadius: 16, padding: "2.5rem 2rem", boxShadow: "0 4px 32px rgba(10,22,40,0.07)", border: `1px solid ${C.gray200}` }}>
+              <div style={{ ...sora, fontWeight: 700, fontSize: "1.1rem", color: C.navy, marginBottom: "1.75rem" }}>Mesaj Gönderin</div>
+              <ContactForm />
+            </div>
+
+          </div>
+        </div>
       </section>
 
       {/* ══ FOOTER ══ */}
@@ -394,8 +619,18 @@ export default function WcorpX() {
             <div>
               <div style={{ ...sora, fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#fff", marginBottom: "1.25rem" }}>Hızlı Bağlantılar</div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {["Hizmetlerimiz", "Metodolojimiz", "Ekibimiz", "İletişim"].map(l => (
-                  <a key={l} href="#" style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>{l}</a>
+                {[
+                  { label: "Hizmetlerimiz",  id: "hizmetler" },
+                  { label: "Ekibimiz",       id: "ekip" },
+                  { label: "İletişim",       id: "iletisim" },
+                ].map(({ label, id }) => (
+                  <a
+                    key={id}
+                    onClick={() => scrollTo(id)}
+                    style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.55)", textDecoration: "none", cursor: "pointer" }}
+                  >
+                    {label}
+                  </a>
                 ))}
               </div>
             </div>
@@ -403,19 +638,20 @@ export default function WcorpX() {
               <div style={{ ...sora, fontWeight: 700, fontSize: "0.82rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#fff", marginBottom: "1.25rem" }}>İletişim</div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
                 {[
-                  { icon: "phone", text: "+90 530 945 89 96", sub: "Burak Koç" },
-                  { icon: "phone", text: "+90 538 354 30 24", sub: "Tarık Eken" },
-                  { icon: "mail",  text: "burak.koc@wcorpx.com", sub: "" },
-                  { icon: "mail",  text: "tarik.eken@wcorpx.com", sub: "" },
-                  { icon: "instagram", text: "@wcorpx", sub: "" },
-                ].map(({ icon, text, sub }) => (
-                  <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  { icon: "phone", text: "+90 530 945 89 96", sub: "Burak Koç",  href: "tel:+905309458996" },
+                  { icon: "phone", text: "+90 538 354 30 24", sub: "Tarık Eken", href: "tel:+905383543024" },
+                  { icon: "mail",  text: "burak.koc@wcorpx.com",  sub: "", href: "mailto:burak.koc@wcorpx.com" },
+                  { icon: "mail",  text: "tarik.eken@wcorpx.com", sub: "", href: "mailto:tarik.eken@wcorpx.com" },
+                  { icon: "instagram", text: "@wcorpx", sub: "", href: "https://instagram.com/wcorpx" },
+                ].map(({ icon, text, sub, href }) => (
+                  <a key={text} href={href} target={icon === "instagram" ? "_blank" : undefined} rel="noreferrer"
+                    style={{ display: "flex", alignItems: "flex-start", gap: 10, textDecoration: "none" }}>
                     <div style={{ marginTop: 2, flexShrink: 0 }}><Ico d={ICONS[icon]} size={15} color={C.org} /></div>
                     <div>
                       <div style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.75)" }}>{text}</div>
                       {sub && <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.35)" }}>{sub}</div>}
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
