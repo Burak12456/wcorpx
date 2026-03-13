@@ -233,12 +233,11 @@ const HomePage = ({ setPage }) => {
             </div>
             {/* Hero Görsel */}
             <div style={{ ...fade(vHero, 0.2), position: "relative" }}>
-              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 64px rgba(10,22,40,0.12)" }}>
-                <img
-                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80"
-                  alt="Kurumsal wellness"
-                  style={{ width: "100%", height: 420, objectFit: "cover", display: "block" }}
-                />
+              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 64px rgba(10,22,40,0.12)", height: 420, background: `linear-gradient(135deg, ${C.navy2} 0%, #1e3a5f 100%)`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12 }}>
+                <div style={{ width: 72, height: 72, borderRadius: "50%", background: C.orgBg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Ico d={ICONS.heart} size={32} color={C.org} />
+                </div>
+                <div style={{ ...sora, fontWeight: 700, fontSize: "1rem", color: "rgba(255,255,255,0.5)" }}>Görsel eklenecek</div>
               </div>
               <div style={{ position: "absolute", bottom: -20, left: -20, background: C.white, borderRadius: 14, padding: "1rem 1.25rem", boxShadow: "0 8px 32px rgba(10,22,40,0.10)", display: "flex", alignItems: "center", gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: 10, background: C.orgBg, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -291,8 +290,8 @@ const HomePage = ({ setPage }) => {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
             {/* Ofiste */}
             <div style={{ ...fade(vEvents, 0.1), background: C.white, borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 24px rgba(10,22,40,0.07)", border: `1px solid ${C.gray200}` }}>
-              <div style={{ position: "relative", height: 240, overflow: "hidden" }}>
-                <img src="https://images.unsplash.com/photo-1540479859555-17af45c78602?w=600&q=80" alt="Ofiste etkinlik" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "relative", height: 240, overflow: "hidden", background: `linear-gradient(135deg, ${C.navy} 0%, #1e3a5f 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Ico d={ICONS.building} size={48} color="rgba(249,115,22,0.35)" />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,22,40,0.7) 0%, transparent 60%)" }} />
                 <div style={{ position: "absolute", bottom: 16, left: 20, display: "flex", alignItems: "center", gap: 8 }}>
                   <div style={{ width: 34, height: 34, borderRadius: 8, background: C.org, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -316,8 +315,8 @@ const HomePage = ({ setPage }) => {
             </div>
             {/* Online */}
             <div style={{ ...fade(vEvents, 0.2), background: C.white, borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 24px rgba(10,22,40,0.07)", border: `1px solid ${C.gray200}` }}>
-              <div style={{ position: "relative", height: 240, overflow: "hidden" }}>
-                <img src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=600&q=80" alt="Online etkinlik" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "relative", height: 240, overflow: "hidden", background: `linear-gradient(135deg, ${C.navy2} 0%, #0d2137 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Ico d={ICONS.video} size={48} color="rgba(249,115,22,0.35)" />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,22,40,0.7) 0%, transparent 60%)" }} />
                 <div style={{ position: "absolute", bottom: 16, left: 20, display: "flex", alignItems: "center", gap: 8 }}>
                   <div style={{ width: 34, height: 34, borderRadius: 8, background: C.org, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -589,7 +588,7 @@ const AboutPage = ({ setPage }) => {
     {
       name: "Burak Koç",
       title: "Kurucu & Baş Antrenör",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+      img: null,
       bio: "Yıllarca sahada kişisel antrenör olarak çalışan Burak, kurumsal dünyanın wellness ihtiyacını yakından gözlemleyerek WcorpX'i kurdu. Şirketlerin performansının çalışanların fiziksel ve zihinsel sağlığıyla doğrudan bağlantılı olduğuna inanıyor.",
       stats: [{ v: "10+", l: "Yıl Deneyim" }, { v: "500+", l: "Birebir Seans" }, { v: "20+", l: "Kurumsal Proje" }],
       phone: "+90 530 945 89 96",
@@ -598,7 +597,7 @@ const AboutPage = ({ setPage }) => {
     {
       name: "Tarık Eken",
       title: "Kurucu & Program Direktörü",
-      img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+      img: null,
       bio: "Spor bilimleri ve kurumsal performans alanındaki uzmanlığını birleştiren Tarık, WcorpX'in program mimarisini ve ölçülebilir sonuç sistemini tasarladı. Her programın bilimsel temele oturmasını sağlıyor.",
       stats: [{ v: "8+", l: "Yıl Deneyim" }, { v: "300+", l: "Program Tasarımı" }, { v: "15+", l: "Sektör" }],
       phone: "+90 538 354 30 24",
@@ -640,8 +639,9 @@ const AboutPage = ({ setPage }) => {
               </p>
             </div>
             <div style={{ ...fade(vStory, 0.15) }}>
-              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(10,22,40,0.10)" }}>
-                <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=600&q=80" alt="WcorpX hikayesi" style={{ width: "100%", height: 380, objectFit: "cover" }} />
+              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(10,22,40,0.10)", height: 380, background: `linear-gradient(135deg, ${C.navy2} 0%, #1e3a5f 100%)`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12 }}>
+                <Ico d={ICONS.heart} size={48} color="rgba(249,115,22,0.35)" />
+                <div style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.3)", ...sora }}>Görsel eklenecek</div>
               </div>
             </div>
           </div>
@@ -659,8 +659,8 @@ const AboutPage = ({ setPage }) => {
             {founders.map(({ name, title, img, bio, stats, phone, mail }, i) => (
               <div key={name} style={{ ...fade(vTeam, i * 0.15), background: C.white, border: `1px solid ${C.gray200}`, borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 24px rgba(10,22,40,0.06)" }}>
                 <div style={{ display: "flex", gap: "1.75rem", padding: "2rem 2rem 1.5rem" }}>
-                  <div style={{ width: 90, height: 90, borderRadius: 16, overflow: "hidden", flexShrink: 0, background: C.gray200 }}>
-                    <img src={img} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ width: 90, height: 90, borderRadius: 16, overflow: "hidden", flexShrink: 0, background: `linear-gradient(135deg, ${C.navy} 0%, #1e3a5f 100%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Ico d={ICONS.users} size={36} color="rgba(249,115,22,0.5)" />
                   </div>
                   <div>
                     <div style={{ ...sora, fontWeight: 800, fontSize: "1.2rem", color: C.navy }}>{name}</div>
