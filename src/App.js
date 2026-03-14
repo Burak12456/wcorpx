@@ -103,11 +103,14 @@ const IC = {
   wifi:"M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01",
 };
 
-const Ico = ({ d, size = 22, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d={d} />
-  </svg>
-);
+const Ico = ({ d, size = 22, color = "currentColor" }) => {
+  if (!d) return null;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d={d} />
+    </svg>
+  );
+};
 
 const AnimWords = ({ text, baseDelay = 0.1, color }) => (
   <>
@@ -233,6 +236,7 @@ const SVC_DETAILS = {
 
 const ServiceDetailPage = ({ service, onBack, setPage }) => {
   const [rH, vH] = useInView();
+  if (!service || !service.title) return <div style={{ padding: "8rem 2rem", textAlign: "center" }}><button onClick={onBack}>← Geri</button></div>;
   const d = SVC_DETAILS[service.title] || {};
   return (
     <div className="wcx-page">
@@ -248,7 +252,7 @@ const ServiceDetailPage = ({ service, onBack, setPage }) => {
             </div>
             <div>
               <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-                {service.tags.map(t => (
+                {(service.tags || []).map(t => (
                   <span key={t} style={{ background: t === "Online" ? "rgba(255,255,255,0.15)" : C.orgBg, color: t === "Online" ? "#fff" : C.org, fontSize: "0.68rem", fontWeight: 700, padding: "0.22rem 0.65rem", borderRadius: 100 }}>{t}</span>
                 ))}
               </div>
@@ -733,7 +737,7 @@ const AboutPage = ({ setPage }) => {
         <div ref={rT} style={inner}>
           <div style={{ ...fade(vT, 0), textAlign: "center", marginBottom: "3rem" }}>
             <div style={tag}>Kurucularımız</div>
-            <h2 style={h2s}>Bizi <span style={{ color: C.org }}>Tanıyın</span></h2>
+            <h2 style={h2s}>Ekibimizi <span style={{ color: C.org }}>Tanıyın</span></h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(420px,1fr))", gap: "2rem" }}>
             {[
